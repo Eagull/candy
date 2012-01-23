@@ -156,13 +156,15 @@ Candy.Core = (function(self, Strophe, $) {
 
 		_anonymousConnection = !_anonymousConnection ? jidOrHost && jidOrHost.indexOf("@") < 0 : true;
 
+		var resource = Strophe.getResourceFromJid(jidOrHost) || Candy.about.name;
+
 		if(jidOrHost && password) {
 			// authentication
-			_connection.connect(_getEscapedJidFromJid(jidOrHost) + '/' + Candy.about.name, password, Candy.Core.Event.Strophe.Connect);
+			_connection.connect(_getEscapedJidFromJid(jidOrHost) + '/' + resource, password, Candy.Core.Event.Strophe.Connect);
 			_user = new self.ChatUser(jidOrHost, Strophe.getNodeFromJid(jidOrHost));
 		} else if(jidOrHost && nick) {
 			// anonymous connect
-			_connection.connect(_getEscapedJidFromJid(jidOrHost) + '/' + Candy.about.name, null, Candy.Core.Event.Strophe.Connect);
+			_connection.connect(_getEscapedJidFromJid(jidOrHost) + '/' + resource, null, Candy.Core.Event.Strophe.Connect);
 			_user = new self.ChatUser(null, nick); // set jid to null because we'll later receive it
 		} else if(jidOrHost) {
 			Candy.Core.Event.Login(jidOrHost);
